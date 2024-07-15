@@ -61,3 +61,7 @@ custom('ClassA.method', function(context, next) {
   console.log(this, 'after', args[0]);
 })
 ```
+
+# Limit
+
+* 仅支持标准 JS 写法， 不支持 TS 写法
