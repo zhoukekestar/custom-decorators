@@ -38,3 +38,26 @@ ClassA {} after world
 */
 ```
 
+# Features
+
+* 支持同步
+
+```js
+class ClassA {
+
+  @custom('ClassA.method', { sync: true })
+  method(name) {
+    console.log(`hello ${name}`);
+  }
+}
+
+// 注意插件函数也需要是同步，不要添加 async 关键字
+custom('ClassA.method', function(context, next) {
+
+  const { args } = context;
+
+  console.log(this, 'before', args[0]);
+  next();
+  console.log(this, 'after', args[0]);
+})
+```
