@@ -8,7 +8,7 @@
 # Quick Start
 
 ```js
-import custom from '@ali/custom';
+import custom from 'custom-decorators';
 
 class ClassA {
 
