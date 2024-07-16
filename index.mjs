@@ -22,27 +22,26 @@ function getMiddleware (name, handler) {
 /**
  * 注册自定义扩展点
  * @param {string} name 自定义扩展点名称
- * @param {object} optionsOrCallback 自定义扩展点回调
- *        {boolean} sync 是否是同步函数
  */
-export default (name, optionsOrCallback = {}) => {
-  const { sync = false } = optionsOrCallback;
-
+export default (name, callback) => {
   // 如果有 callback，说明是注册函数
-  if (typeof optionsOrCallback === 'function') {
-    register(name, optionsOrCallback);
+  if (typeof callback === 'function') {
+    register(name, callback);
 
     // 否则，就是声明自定义扩展点
   } else {
     return (method, context) => {
       if (context.kind === 'method') {
+        const isAsyncFunction = method[Symbol.toStringTag] === 'AsyncFunction';
+        const sync = isAsyncFunction ? false : true;
+
         if (sync) {
           return function (...args) {
             // 把当前方法，放在洋葱模型最里面
-            const result = compose(
-              getMiddleware(name, method),
-              optionsOrCallback
-            )({ args, self: this });
+            const result = compose(getMiddleware(name, method), { sync })({
+              args,
+              self: this,
+            });
             return result?.return || result;
           };
         }
@@ -67,13 +66,16 @@ export default (name, optionsOrCallback = {}) => {
       if (context.kind === 'field') {
         return function (methodOrOthers) {
           if (typeof methodOrOthers === 'function') {
+            const isAsyncFunction =
+              methodOrOthers[Symbol.toStringTag] === 'AsyncFunction';
+            const sync = isAsyncFunction ? false : true;
+
             // 如果是同步函数
             if (sync) {
               return function (...args) {
-                const result = compose(
-                  getMiddleware(name, methodOrOthers),
-                  optionsOrCallback
-                )({ args, self: this });
+                const result = compose(getMiddleware(name, methodOrOthers), {
+                  sync,
+                })({ args, self: this });
 
                 return result?.return || result;
               };

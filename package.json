@@ -1,6 +1,6 @@
 {
   "name": "custom-decorators",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "type": "module",
   "main": "index.mjs",
@@ -16,5 +16,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

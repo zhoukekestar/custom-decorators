@@ -11,7 +11,7 @@ test('有注解没有任何中间件的情况', async t => {
       return 'CustomWithNoMiddleware.asyncFieldMethod';
     };
 
-    @custom('CustomWithNoMiddleware.syncFieldMethod', { sync: true })
+    @custom('CustomWithNoMiddleware.syncFieldMethod')
     syncFieldMethod = () => {
       return 'CustomWithNoMiddleware.syncFieldMethod';
     };
@@ -21,7 +21,7 @@ test('有注解没有任何中间件的情况', async t => {
       return 'CustomWithNoMiddleware.asyncMethod';
     }
 
-    @custom('CustomWithNoMiddleware.syncMethod', { sync: true })
+    @custom('CustomWithNoMiddleware.syncMethod')
     syncMethod () {
       return 'CustomWithNoMiddleware.syncMethod';
     }
@@ -71,7 +71,7 @@ test('有注解且有中间件，但不做任何处理', async t => {
       return 'CustomWithMiddleware.asyncFieldMethod';
     };
 
-    @custom('CustomWithMiddleware.syncFieldMethod', { sync: true })
+    @custom('CustomWithMiddleware.syncFieldMethod')
     syncFieldMethod = () => {
       return 'CustomWithMiddleware.syncFieldMethod';
     };
@@ -81,7 +81,7 @@ test('有注解且有中间件，但不做任何处理', async t => {
       return 'CustomWithMiddleware.asyncMethod';
     }
 
-    @custom('CustomWithMiddleware.syncMethod', { sync: true })
+    @custom('CustomWithMiddleware.syncMethod')
     syncMethod () {
       return 'CustomWithMiddleware.syncMethod';
     }
@@ -143,13 +143,13 @@ test('有注解且有中间件并使用中间件执行结果', async t => {
     @custom('CustomWithMiddlewareExecute.asyncFieldMethod')
     asyncFieldMethod = async () => {};
 
-    @custom('CustomWithMiddlewareExecute.syncFieldMethod', { sync: true })
+    @custom('CustomWithMiddlewareExecute.syncFieldMethod')
     syncFieldMethod = () => {};
 
     @custom('CustomWithMiddlewareExecute.asyncMethod')
     async asyncMethod () {}
 
-    @custom('CustomWithMiddlewareExecute.syncMethod', { sync: true })
+    @custom('CustomWithMiddlewareExecute.syncMethod')
     syncMethod () {}
 
     @custom('CustomWithMiddlewareExecute.methodargs')
@@ -210,7 +210,7 @@ test('多层中间件测试', async t => {
       return arg1 + '-core';
     }
 
-    @custom('MultipleMiddle.syncMethod', { sync: true })
+    @custom('MultipleMiddle.syncMethod')
     syncMethod (arg1) {
       return arg1 + '-core';
     }
@@ -281,25 +281,3 @@ test('多层中间件 return 值测试', async t => {
   assert.deepEqual(await multipleMiddle.asyncMethod(), '2-1-core-1-2');
 
 });
-
-
-class ClassA {
-
-  @custom('ClassA.method')
-  method(name) {
-    console.log(`hello ${name}`);
-  }
-}
-
-custom('ClassA.method', async function(context, next) {
-
-  const { args } = context;
-
-  console.log(this, 'before', args[0]);
-  await next();
-  console.log(this, 'after', args[0]);
-})
-
-
-const instancea = new ClassA();
-instancea.method('world');
