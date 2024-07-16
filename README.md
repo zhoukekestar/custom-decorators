@@ -13,7 +13,7 @@ import custom from 'custom-decorators';
 class ClassA {
 
   @custom('ClassA.method')
-  method(name) {
+  async method(name) {
     console.log(`hello ${name}`);
   }
 }
