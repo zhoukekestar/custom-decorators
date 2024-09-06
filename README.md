@@ -89,3 +89,22 @@ console.log(instancea.get('world'));
 before hello world after
 */
 ```
+
+
+* 支持私有扩展 (不对外暴露相关 symbol 对象，即可实现私有扩展)
+
+```js
+const PRIVATE_EXTENSION = Symbol('private_extension');
+
+class ClassA {
+
+  @custom(PRIVATE_EXTENSION)
+  async method(name) {
+    console.log(`hello ${name}`);
+  }
+}
+
+custom(PRIVATE_EXTENSION, async function(context, next) {
+  // code
+})
+```
