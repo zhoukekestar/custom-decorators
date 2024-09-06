@@ -1,9 +1,9 @@
 
-# custom 开放技术架构
+# custom Open Technical Architecture
 
-  使用标准的装饰器语法，轻松实现对原有代码的开放、扩展。
+  Easily extend and enhance existing code using a standard decorator syntax.
 
-  插件的写法，遵循 koa-compose 的中间件写法。
+  The extension plugin is written following the style of Koa Middleware.
 
 # Quick Start
 
@@ -40,7 +40,7 @@ ClassA {} after world
 
 # Features
 
-* 支持同步
+* Support both `async` and `sync` functions depending on your declaration.
 
 ```js
 class ClassA {
@@ -51,7 +51,8 @@ class ClassA {
   }
 }
 
-// 注意原有函数是同步的，插件函数也需要是同步，不要添加 async 关键字
+// Note that the original function is synchronous, so the plugin function should also be sync.
+// DO NOT add the `async` keyword.
 custom('ClassA.method', function(context, next) {
 
   const { args } = context;
@@ -63,7 +64,7 @@ custom('ClassA.method', function(context, next) {
 ```
 
 
-* 支持返回值
+* Support the return value.
 
 ```js
 class ClassA {
@@ -74,7 +75,7 @@ class ClassA {
   }
 }
 
-// 支持函数返回
+// Get & modify the return value
 custom('ClassA.method', async function(context, next) {
 
   const returnValue = await next();
@@ -91,8 +92,8 @@ before hello world after
 ```
 
 
-* 支持私有扩展 (不对外暴露相关 symbol 对象，即可实现私有扩展)
-
+* Support for private extension (by not exports your symbol objects)
+  
 ```js
 const PRIVATE_EXTENSION = Symbol('private_extension');
 
@@ -105,6 +106,6 @@ class ClassA {
 }
 
 custom(PRIVATE_EXTENSION, async function(context, next) {
-  // code
+  // code gos here
 })
 ```
