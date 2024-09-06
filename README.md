@@ -3,7 +3,7 @@
 
   Easily extend and enhance existing code using a standard decorator syntax.
 
-  The extension plugin is written following the style of Koa Middleware.
+  The extension plugin is written following the style of `Koa Middleware`.
 
 # Quick Start
 
