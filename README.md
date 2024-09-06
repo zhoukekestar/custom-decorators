@@ -45,13 +45,13 @@ ClassA {} after world
 ```js
 class ClassA {
 
-  @custom('ClassA.method', { sync: true })
+  @custom('ClassA.method')
   method(name) {
     console.log(`hello ${name}`);
   }
 }
 
-// 注意插件函数也需要是同步，不要添加 async 关键字
+// 注意原有函数是同步的，插件函数也需要是同步，不要添加 async 关键字
 custom('ClassA.method', function(context, next) {
 
   const { args } = context;
@@ -62,6 +62,30 @@ custom('ClassA.method', function(context, next) {
 })
 ```
 
-# Limit
 
-* 仅支持标准 JS 写法， 不支持 TS 写法
+* 支持返回值
+
+```js
+class ClassA {
+
+  @custom('ClassA.method')
+  async get(name) {
+    return `hello ${name}`;
+  }
+}
+
+// 支持函数返回
+custom('ClassA.method', async function(context, next) {
+
+  const returnValue = await next();
+
+  return `before ${returnValue} after`;
+})
+
+const instancea = new ClassA();
+console.log(instancea.get('world'));
+
+/* output
+before hello world after
+*/
+```
