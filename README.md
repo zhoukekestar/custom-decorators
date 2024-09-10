@@ -12,14 +12,19 @@ import custom from 'custom-decorators';
 
 class ClassA {
 
+  // Just add a `@custom` decorator and the extension name.
   @custom('ClassA.method')
+
+  // No need to modify something for the function
   async method(name) {
     console.log(`hello ${name}`);
   }
 }
 
+// Add a middleware to extend the method
 custom('ClassA.method', async function(context, next) {
 
+  // Get the arguments from the context
   const { args } = context;
 
   console.log(this, 'before', args[0]);
@@ -29,6 +34,8 @@ custom('ClassA.method', async function(context, next) {
 
 
 const instancea = new ClassA();
+
+// invoke the original method as usual
 instancea.method('world');
 
 /* output
@@ -37,6 +44,11 @@ hello world
 ClassA {} after world
 */
 ```
+
+# Architecture
+
+![image](https://github.com/user-attachments/assets/0cba3ba3-87b3-40da-8920-5946584a032c)
+
 
 # Features
 
