@@ -1,6 +1,9 @@
 
 # custom Open Technical Architecture
 
+  [![npm](https://img.shields.io/npm/v/custom-decorators.svg)](https://www.npmjs.com/package/custom-decorators)
+  [![npm](https://img.shields.io/npm/dy/custom-decorators.svg)](https://www.npmjs.com/package/custom-decorators)
+
   Easily extend and enhance existing code using a standard decorator syntax.
 
   The extension plugin is written following the style of `Koa Middleware`.
@@ -121,3 +124,9 @@ custom(PRIVATE_EXTENSION, async function(context, next) {
   // code gos here
 })
 ```
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
+
+Copyright (c) 2024-present, Zhoukekestar
