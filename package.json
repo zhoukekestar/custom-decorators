@@ -1,7 +1,7 @@
 {
   "name": "custom-decorators",
   "version": "0.0.4",
-  "description": "",
+  "description": "Easily extend and enhance existing code using a standard decorator syntax.",
   "type": "module",
   "main": "index.mjs",
   "scripts": {
@@ -18,7 +18,7 @@
     "@babel/plugin-proposal-decorators": "^7.23.3",
     "@babel/preset-env": "^7.23.3"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["open", "extension", "extend", "decorators", "meta-programing"],
+  "author": "zhoukekestar",
   "license": "MIT"
 }
