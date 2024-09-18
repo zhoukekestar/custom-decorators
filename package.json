@@ -7,6 +7,10 @@
   "scripts": {
     "test": "babel ./test/index.mjs > ./test/output.mjs && node ./test/output.mjs && rm ./test/output.mjs"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhoukekestar/custom-decorators.git"
+  },
   "devDependencies": {
     "@babel/cli": "^7.24.8",
     "@babel/core": "^7.23.3",
