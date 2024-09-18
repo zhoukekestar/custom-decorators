@@ -258,7 +258,7 @@ test('多层中间件测试', async t => {
 test('多层中间件 return 值测试', async t => {
   class MultipleMiddle {
     @custom('MultipleMiddle.asyncMethod')
-    asyncMethod (arg1) {
+    async asyncMethod (arg1) {
       return 'core';
     }
   }
@@ -280,4 +280,61 @@ test('多层中间件 return 值测试', async t => {
   const multipleMiddle = new MultipleMiddle();
   assert.deepEqual(await multipleMiddle.asyncMethod(), '2-1-core-1-2');
 
+});
+
+
+test('多个中间件的多次执行', async t => {
+  class MultipleMiddle {
+    @custom('MultipleMiddle.runMultipletimes')
+    method (arg1) {
+      return 'core';
+    }
+  }
+
+  custom('MultipleMiddle.runMultipletimes', (context, next) => {
+    let val = '1-'
+    val = val + next();
+    return val + '-1';
+  });
+
+  custom('MultipleMiddle.runMultipletimes', (context, next) => {
+    let val = '2-'
+    val = val + next();
+    return val + '-2';
+  });
+
+
+
+  const multipleMiddle = new MultipleMiddle();
+  assert.deepEqual(multipleMiddle.method(), '2-1-core-1-2');
+  assert.deepEqual(multipleMiddle.method(), '2-1-core-1-2');
+  assert.deepEqual(multipleMiddle.method(), '2-1-core-1-2');
+});
+
+
+test('多个中间件的多次异步执行', async t => {
+  class MultipleMiddle {
+    @custom('MultipleMiddle.runMultipletimesAsync')
+    async method (arg1) {
+      return 'core';
+    }
+  }
+
+  custom('MultipleMiddle.runMultipletimesAsync', async (context, next) => {
+    let val = '1-'
+    val = val + await next();
+    return val + '-1';
+  });
+
+  custom('MultipleMiddle.runMultipletimesAsync', async (context, next) => {
+    let val = '2-'
+    val = val + await next();
+    return val + '-2';
+  });
+
+
+  const multipleMiddle = new MultipleMiddle();
+  assert.deepEqual(await multipleMiddle.method(), '2-1-core-1-2');
+  assert.deepEqual(await multipleMiddle.method(), '2-1-core-1-2');
+  assert.deepEqual(await multipleMiddle.method(), '2-1-core-1-2');
 });

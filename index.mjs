@@ -17,7 +17,8 @@ function register (name, callback) {
 }
 
 function getMiddleware (name, handler) {
-  return (cache?.[name] || []).reverse().concat(handler);
+  const middles = (cache?.[name] || []);
+  return Array.from(middles).reverse().concat(handler);
 }
 /**
  * 注册自定义扩展点
