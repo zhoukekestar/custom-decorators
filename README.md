@@ -1,12 +1,12 @@
 
-# custom Open Technical Architecture
+# Custom: An Open & Extensible Architecture
 
   [![npm](https://img.shields.io/npm/v/custom-decorators.svg)](https://www.npmjs.com/package/custom-decorators)
   [![npm](https://img.shields.io/npm/dy/custom-decorators.svg)](https://www.npmjs.com/package/custom-decorators)
 
-  Easily extend and enhance existing code using a standard decorator syntax.
+  Easily extend and enhance existing methods using standard decorator syntax.
 
-  The extension plugin is written following the style of `Koa Middleware`.
+  This library adopts a `Koa-style` middleware pattern to provide a flexible plugin system for your code.
 
 # Quick Start
 
@@ -15,19 +15,19 @@ import custom from 'custom-decorators';
 
 class ClassA {
 
-  // Just add a `@custom` decorator and the extension name.
+  // Attach the @custom decorator with a unique identifier
   @custom('ClassA.method')
 
-  // No need to modify something for the function
+  // No changes required to the existing method logic
   async method(name) {
     console.log(`hello ${name}`);
   }
 }
 
-// Add a middleware to extend the method
+// Register middleware to extend the method's behavior
 custom('ClassA.method', async function(context, next) {
 
-  // Get the arguments from the context
+  // Access arguments via the context object
   const { args } = context;
 
   console.log(this, 'before', args[0]);
@@ -38,7 +38,7 @@ custom('ClassA.method', async function(context, next) {
 
 const instancea = new ClassA();
 
-// invoke the original method as usual
+// Call the method as usual
 instancea.method('world');
 
 /* output
@@ -55,7 +55,9 @@ ClassA {} after world
 
 # Features
 
-* Support both `async` and `sync` functions depending on your declaration.
+* Seamless Async & Sync Support
+
+The framework automatically detects and supports both synchronous and asynchronous functions based on your implementation.
 
 ```js
 class ClassA {
@@ -66,8 +68,8 @@ class ClassA {
   }
 }
 
-// Note that the original function is synchronous, so the plugin function should also be sync.
-// DO NOT add the `async` keyword.
+// Note: If the original method is synchronous, the middleware must also be synchronous.
+// Do NOT use the `async` keyword in this case.
 custom('ClassA.method', function(context, next) {
 
   const { args } = context;
@@ -79,7 +81,9 @@ custom('ClassA.method', function(context, next) {
 ```
 
 
-* Support the return value.
+* Return Value Manipulation
+
+Middleware can capture or even modify the return value of the original method.
 
 ```js
 class ClassA {
@@ -90,7 +94,7 @@ class ClassA {
   }
 }
 
-// Get & modify the return value
+// Intercept and modify the return value
 custom('ClassA.method', async function(context, next) {
 
   const returnValue = await next();
@@ -107,8 +111,10 @@ before hello world after
 ```
 
 
-* Support for private extension (by not exports your symbol objects)
-  
+* Private Extensions via Symbols
+
+Ensure your extension points are private and secure by using Symbol instead of string identifiers.
+
 ```js
 const PRIVATE_EXTENSION = Symbol('private_extension');
 
@@ -121,7 +127,7 @@ class ClassA {
 }
 
 custom(PRIVATE_EXTENSION, async function(context, next) {
-  // code gos here
+  // Your private extension logic here
 })
 ```
 
